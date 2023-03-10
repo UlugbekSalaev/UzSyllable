@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="UzSyllable",
-    version="0.0.1",
+    version="0.0.2",
     author="Ulugbek Salaev",
     author_email="ulugbek0302@gmail.com",
     description="UzSyllable | The Syllable Separator, Line breaks and Counter for Uzbek Language",
