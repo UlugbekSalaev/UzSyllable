@@ -93,14 +93,9 @@ def line_break(token):
     return txt
 
 def count(text):
-    tokens=syllables(text) #["yb-ini",]
+    tokens=syllables(text)
     count=0
     for token in tokens:
         syll=token.split('-')
         count+=len(syll)
     return count
-
-# while True:
-#     str = input("\n>>> ")
-#     if str=="break": break
-#     print(line_break(str),"\n")
