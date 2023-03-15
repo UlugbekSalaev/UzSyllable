@@ -20,7 +20,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    keywords=['syllable', 'line-break', 'uzbek-language'],
+    keywords=['syllabification', 'end-of-line', 'line-break', 'hyphenation', 'justification', 'Uzbek language'],
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
     install_requires=[],
