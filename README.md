@@ -1,36 +1,32 @@
-# UzMorphAnalyser
+# UzSyllable
 
-https://pypi.org/project/UzMorphAnalyser <br>
-https://github.com/UlugbekSalaev/UzMorphAnalyser
+https://pypi.org/project/UzSyllable <br>
+https://github.com/UlugbekSalaev/UzSyllable
 
-UzMorpAnalyser tool is focused to make morphological analysis of Uzbek word based on morphemes. The tool includes Stemmer, Lemmatizer, Morphological Analyze methods.
+UzSyllable tool is focused to make division of syllables and end of line breaks of Uzbek language. The tool includes Syllabification, End-of-Line, Count of Syllables methods.
 It is created as a python library and uploaded to [PyPI](https://pypi.org/). It is simply easy to use in your python project or other programming language projects via the API. 
 
 ## About project
-The tool is focused to make morphological analysis of Uzbek word based on morphemes. The tool includes Stemmer, Lemmatizer, Morphological Analyze methods.
-
+The UzSyllable project is a text processing tool that includes three main methods: syllabification, end-of-line, and count of syllables. Syllabification involves dividing words in Uzbek text into their constituent syllables, which can be useful for pronunciation, spelling, and linguistic analysis. End-of-line justification involves determining the appropriate places to break lines in Uzbek text, which can improve the readability and aesthetics of written materials. Count of syllables involves counting the number of syllables in a given word or sentence, which can be useful for metrics such as rhyme and meter in poetry or for determining the complexity of a text. The UzSyllable project uses machine learning algorithms and linguistic rules to perform these methods accurately and efficiently on Uzbek text.
 ## Quick links
 
-- [Github](https://github.com/UlugbekSalaev/UzMorphAnalyser)
-- [PyPI](https://pypi.org/project/UzMorphAnalyser/)
-- [Web-UI](https://nlp.urdu.uz/?menu=morphanalyser)
+- [Github](https://github.com/UlugbekSalaev/UzSyllable)
+- [PyPI](https://pypi.org/project/UzSyllable/)
+- [Web-UI](https://nlp.urdu.uz/?menu=uzsyllable)
 
 ## Demo
 
-You can use [web interface](http://nlp.urdu.uz/?menu=morphanalyser).
+You can use [web interface](http://nlp.urdu.uz/?menu=uzsyllable).
 
 ## Features
 
-- Stemmer
-- Lemmatizer
-- Lemmatizer with POS tag
-- Extract Morphemes list
-- Analyzer
-- Analyzer with POS tag
+- Syllabification
+- End-of-Line
+- Count of Syllables
 
 ## Usage
 
-Three options to run UzMorphAnalyser:
+Three options to run UzSyllable:
 
 - pip
 - API 
@@ -38,28 +34,24 @@ Three options to run UzMorphAnalyser:
 
 ### pip installation
 
-To install UzMorphAnalyser, simply run:
+To install UzSyllable, simply run:
 
 ```code
-pip install UzMorphAnalyser
+pip install UzSyllable
 ```
 
 After installation, use in python like following:
 ```yml
 # import the library
-from UzMorphAnalyser import UzMorphAnalyser
+from UzSyllable import UzSyllable
 # create an object 
-analyzer = UzMorphAnalyser.UzMorphAnalyser()
-# call stem method
-analyzer.stem('maktabimda')
-# call lemmatize method
-analyzer.lemmatize('maktabimda')
-# call lemmatize method with POS tag
-analyzer.lemmatize('maktabimda', analyzer.POS.NOUN)
-# call analyze method
-analyzer.analyze('maktabimda')
-# call analyze method with POS tag
-analyzer.analyze('maktabimda', analyzer.POS.NOUN)
+obj = UzSyllable.UzSyllable()
+# call syllables method
+obj.syllables('maktabimda')
+# call end-of-line method
+obj.line_break('maktabimda')
+# call count of syllables method 
+obj.count('maktabimda')
 ```
 
 ### API
