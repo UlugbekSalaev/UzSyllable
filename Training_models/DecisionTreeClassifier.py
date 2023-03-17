@@ -11,7 +11,7 @@ encoder = LabelEncoder()
 df['syllables'] = encoder.fit_transform(df['syllables'])
 df['word'] = encoder.fit_transform(df['word'])
 # Split the dataset into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(df.drop('syllables', axis=1), df['syllables'], test_size=0.2)
+X_train, X_test, y_train, y_test = train_test_split(df.drop('word', axis=1), df['syllables'], test_size=0.2)
 # Initialize a Decision Tree model
 model = DecisionTreeClassifier()
 # Train the model on the training data
@@ -23,6 +23,3 @@ y_pred_syllables = encoder.inverse_transform(y_pred)
 # Calculate the accuracy of the model
 accuracy = accuracy_score(y_test, y_pred)
 print('Accuracy:', accuracy)
-
-
-
