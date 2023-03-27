@@ -1,5 +1,5 @@
 def syllables(text):
-    tokens = __preprocess(text)
+    tokens = text.split()
     sylls = list()
     for token in tokens:
         count = 0
@@ -80,9 +80,6 @@ def syllables(text):
         sylls.append(str[0:len(str)-1])
     return sylls
 
-def __preprocess(text):
-    return text.split()
-
 def line_break(token):
     count = 0
     u=set("AaEeUuOoIi")
@@ -92,36 +89,37 @@ def line_break(token):
             count += 1
     if count == 1 or len(token) < 4:
         return token
-    count=0 
+    count = 0
     for letter in token:
-        for i in range(65,91):            
+        for i in range(65, 91):
             if ord(letter) == i:
                 count += 1            
-        if count>1:
+        if count > 1:
             return token
-    for i in range(2,len(token)):
-        word=""
+    for i in range(2, len(token)):
+        word = ""
         if token[i] in u and token[i-1] not in u:
-            if token[i-1]=='h' or token[i-1]=="'":
-                if token[i-2] in ['s','c']:
-                    word+=token[0:i-2]+"-"+token[i-2:len(token)]
-                else : word+=token[0:i-1]+"-"+token[i-1:len(token)]
-            elif len(token[0:i-1])>1 : word+=token[0:i-1]+"-"+token[i-1:len(token)]
-        if len(word)>1:
-            w=word.split("-")
-            if w[1][0]=='g' and w[0][len(w[0])-1] == 'n':
-                s=w[1]
-                w[1]='n'+s
-                s=w[0]
-                w[0]=s[0:len(s)-1]
-            txt.append(w[0]+"-"+w[1])
+            if token[i-1] == 'h' or token[i-1] == "'":
+                if token[i-2] in ['s', 'c']:
+                    word += token[0:i-2] + "-" + token[i-2:len(token)]
+                else:
+                    word += token[0:i-1]+"-"+token[i-1:len(token)]
+            elif len(token[0:i-1]) > 1:
+                word += token[0:i-1]+"-"+token[i-1:len(token)]
+        if len(word) > 1:
+            w = word.split("-")
+            if w[1][0] == 'g' and w[0][len(w[0])-1] == 'n':
+                s = w[1]
+                w[1] = 'n'+s
+                s = w[0]
+                w[0] = s[0:len(s)-1]
+            txt.append(w[0] + "-" + w[1])
     return txt
 
 def count(text):
-    tokens=syllables(text)
-    count=0
+    tokens = syllables(text)
+    count = 0
     for token in tokens:
-        syll=token.split('-')
-        count+=len(syll)
+        syll = token.split('-')
+        count += len(syll)
     return count
-
