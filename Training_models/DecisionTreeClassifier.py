@@ -22,22 +22,18 @@ clf.fit(X_train, y_train)
 
 # Evaluate your model
 accuracy = clf.score(X_test, y_test)
-print('Accuracy:', accuracy)
+print('Accuracy:', accuracy) # Accuracy: 0.893719806763285
 
 # Apply your model
-new_words = ['mashrutali', 'abadiylash', 'bajarilmoq']
-for word in new_words:
-    X_new = [[len(syllable), i] for i, syllable in enumerate(word)]
-    y_pred = clf.predict(X_new)
-    syllabification = [syllables[y_pred[0]][0]]
-    for i in range(1, len(y_pred)):
-        if y_pred[i] == y_pred[i-1]:
-            syllabification[-1] += syllables[y_pred[i]][1]
-        else:
-            syllabification.append(syllables[y_pred[i]][0])
-    print(word, '->', '-'.join(syllabification))
+# new_words = ['mashrutali', 'abadiylash', 'bajarilmoq']
+# for word in new_words:
+#     X_new = [[len(syllable), i] for i, syllable in enumerate(word)]
+#     y_pred = clf.predict(X_new)
+#     syllabification = [syllables[y_pred[0]][0]]
+#     for i in range(1, len(y_pred)):
+#         if y_pred[i] == y_pred[i-1]:
+#             syllabification[-1] += syllables[y_pred[i]][1]
+#         else:
+#             syllabification.append(syllables[y_pred[i]][0])
+#     print(word, '->', '-'.join(syllabification))
 
-# Accuracy: 0.893719806763285
-# mashrutali -> a'lo-a'-a'-a'-a'mo-a'-a'-a'
-# abadiylash -> a'lo-a'-a'-a'-a'mo-a'-a'-a'
-# bajarilmoq -> a'lo-a'-a'-a'-a'mo-a'-a'-a'
