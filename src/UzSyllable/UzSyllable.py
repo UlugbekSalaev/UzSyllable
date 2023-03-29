@@ -89,72 +89,37 @@ def syllables(text):
         sylls.append(str[0:len(str)-1])
     return sylls
 
-def line_break(token):
-    count = 0
-    u = set("AaEeUuOoIi")
-    txt = list()
-    for h in token:
-        if h in u:
-            count += 1
-    if count == 1 or len(token) < 4:
-        return token
-    count = 0
-    for letter in token:
-        for i in range(65, 91):
-            if ord(letter) == i:
-                count += 1            
-        if count > 1:
-            return token
-    for i in range(2, len(token)):
-        word = ""
-        if token[i] in u and token[i-1] not in u:
-            if token[i-1] == 'h' or token[i-1] == "'":
-                if token[i-2] in ['s', 'c']:
-                    word += token[0:i-2] + "-" + token[i-2:len(token)]
-                else:
-                    word += token[0:i-1]+"-"+token[i-1:len(token)]
-            elif len(token[0:i-1]) > 1:
-                word += token[0:i-1]+"-"+token[i-1:len(token)]
-        if len(word) > 1:
-            w = word.split("-")
-            if w[1][0] == 'g' and w[0][len(w[0])-1] == 'n':
-                s = w[1]
-                w[1] = 'n'+s
-                s = w[0]
-                w[0] = s[0:len(s)-1]
-            txt.append(w[0] + "-" + w[1])
-    return txt
-
-def test_lb(text):
+def line_break(text):
     word = text
     syllable = ' '.join(syllables(text))
-    tokens = syllable.split('-')
     begin = end = ''
     if word.__contains__('-'):
         for i in range(0, len(word)):
             if word[i] == '-':
-                begin = word[i-1]
-                end = word[i+1]
+                begin = word[i - 1]
+                end = word[i + 1]
     lines = list()
     if not syllable.__contains__('-'):
         lines.append(syllable)
+    tokens = syllable.split('-')
+    count = len(tokens) - 1
     for j in range(1, len(tokens)):
-        if len(tokens[j - 1]) > 1 and len(tokens[j]) > 1:
-            w = ''
-            for i in range(0, j):
-                w += tokens[i]
+        w = ''
+        for i in range(0, j):
+            w += tokens[i]
+        if len(tokens[j - 1]) != 1 and not tokens[j - 1].__contains__(chr(8217)):
             w += '-'
-            for i in range(j, len(tokens)):
-                w += tokens[i]
-            if begin != end != '':
-                for i in range(0, len(w)-1):
-                    if w[i] == begin and w[i+1] == end:
-                        w = w[0:i+1]+'-'+w[i+1:len(w)]
-                        break
+        for i in range(j, len(tokens)):
+            w += tokens[i]
+        if begin != end != '':
+            for i in range(0, len(w) - 1):
+                if w[i] == begin and w[i + 1] == end:
+                    w = w[0:i + 1] + '-' + w[i + 1:len(w)]
+                    break
+        if w != word or count == 1 or word.__contains__('-') and w not in lines:
             lines.append(w)
-        else:
-            lines.append(tokens[j])
     return lines
+
 def count(text):
     tokens = syllables(text)
     count = 0
