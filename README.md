@@ -44,14 +44,12 @@ After installation, use in python like following:
 ```yml
 # import the library
 from UzSyllable import UzSyllable
-# create an object 
-obj = UzSyllable.UzSyllable()
 # call syllables method
-obj.syllables('maktabimda')
+UzSyllable.syllables('maktabimda')
 # call end-of-line method
-obj.line_break('maktabimda')
+UzSyllable.line_break('maktabimda')
 # call count of syllables method 
-obj.count('maktabimda')
+UzSyllable.count('maktabimda')
 ```
 
 ### API
