@@ -42,14 +42,16 @@ pip install UzSyllable
 
 After installation, use in python like following:
 ```yml
-# import the library
-from UzSyllable import UzSyllable
+import UzSyllable
 # call syllables method
-UzSyllable.syllables('maktabimda')
+print(UzSyllable.syllables('maktabimda'))
+# Output : ['mak-ta-bim-da']
 # call end-of-line method
-UzSyllable.line_break('maktabimda')
-# call count of syllables method 
-UzSyllable.count('maktabimda')
+print(UzSyllable.line_break('maktabimda'))
+# Output : ['mak-tabimda', 'makta-bimda', 'maktabim-da']
+# call count of syllables method
+print(UzSyllable.count('maktabimda'))
+# Output : 4
 ```
 
 ### API

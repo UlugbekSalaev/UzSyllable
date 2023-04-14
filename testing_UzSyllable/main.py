@@ -1,4 +1,4 @@
-from UzSyllable import UzSyllable
+import UzSyllable
 import csv
 count = 0
 count_syll_true = 0
@@ -25,3 +25,5 @@ with open('dataset.csv', mode='r') as file:
             writer.writerow([word, syllable, answer_syll, check_syll, line_break, answer_line, check_line])
 print(count_syll_true/count) #0.996180385968867
 print(count_line_true/count) #0.996180385968867
+
+

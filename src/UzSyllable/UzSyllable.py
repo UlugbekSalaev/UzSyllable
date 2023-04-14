@@ -11,17 +11,17 @@ def syllables(text):
                 if ord(letter) == i:
                     count += 1
         if count > 1:
-            sylls.append(token) 
-            continue 
+            sylls.append(token)
+            continue
         count = 0
         for letter in token:
             if letter in vowels:
                 count += 1
         if count == 1:
-            sylls.append(token) 
+            sylls.append(token)
             continue
         for i in range(2, len(token)):
-            if token[i] in vowels and token[i - 1] not in vowels: 
+            if token[i] in vowels and token[i - 1] not in vowels:
                 w = token[start: i - 1]
                 if len(w) != 0:
                     syll.append(w)
@@ -88,7 +88,6 @@ def syllables(text):
                     str += '-'
         sylls.append(str[0:len(str)-1])
     return sylls
-
 def line_break(text):
     word = text
     syllable = ' '.join(syllables(text))
@@ -119,7 +118,6 @@ def line_break(text):
         if w != word or count == 1 or word.__contains__('-') and w not in lines:
             lines.append(w)
     return lines
-
 def count(text):
     tokens = syllables(text)
     count = 0
