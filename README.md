@@ -29,7 +29,6 @@ You can use [web interface](http://nlp.urdu.uz/?menu=uzsyllable).
 Three options to run UzSyllable:
 
 - pip
-- API 
 - Web interface
 
 ### pip installation
@@ -54,69 +53,21 @@ print(UzSyllable.count('maktabimda'))
 # Output : 4
 ```
 
-### API
-API configurations: 
- - Method: GET
- - Response type: <code>string</code>
-
-
- - URL: https://uz-translit.herokuapp.com/stem
-   - Parameters: <code>word:string</code></code>
-   - Sample Request: https://uztranslit.herokuapp.com/stem?word=maktabimda
-
-
- - https://uz-translit.herokuapp.com/lemmatize
-   - Parameters: <code>word:string</code>, <code>pos:string</code>
-   - Sample Request: https://uztranslit.herokuapp.com/lemmatize?word=maktabimda&pos=NOUN
-
-
- - https://uz-translit.herokuapp.com/analyze
-   - Parameters: <code>word:string</code>, <code>pos:string</code>
-   - Sample Request: https://uztranslit.herokuapp.com/analyze?word=maktabimda&pos=NOUN
-
-<i>Note: argument <code>pos</code> is optional in all methods</i>
-### Web-UI
-
-The web interface created to use easily the library:
-You can use web interface [here](http://nlp.urdu.uz/?menu=morphanalyser).
-
-![Demo image](./docs/images/web-interface-ui.png)
-
-
-### Options
-When you use PyPI or API, you should use following options as POS tag of a word which is optional parameters of `lemmatize()` and `analyze()` metods:<br>
-    `NOUN`  Noun<br>
-    `VERB`  Verb<br>
-    `ADJ`   Adjective<br>
-    `NUM`   Numerical<br>
-    `PRN`   Pronoun<br>
-    `ADV`   Adverb
-
-_`pos` parameters is optional for `lemmatize` and `analyze` metods._
-
-### Result Explaining
-
-It returns single word in a string type from each method, `stem` and `lemmatize`, that is stem and lemma of given word, respectively. 
-#### Result from `analyze` method
-`analyze` method returns a response as list of dictionary which is may contain following keys: 
-```yml
- {'word', 'lemma', 'pos', 'affix','affixed','tense','person','cases','singular','plural','question','negative','impulsion','copula','verb_voice','verb_func'}: 
-```
 
 ## Documentation
 
-See [here](https://github.com/UlugbekSalaev/UzMorphAnalyser).
+See [here](https://github.com/UlugbekSalaev/UzSyllable).
 
 ## Citation
 
 ```tex
-@misc{UzMorphAnalyser,
-  title={{UzMorphAnalyser}: Morphological Analyser Tool for Uzbek},
-  url={https://github.com/UlugbekSalaev/UzMorphAnalyser},
-  note={Software available from https://github.com/UlugbekSalaev/UzMorphAnalyser},
+@misc{UzSyllable,
+  title={UzSyllable}: Syllabification Tool for Uzbek},
+  url={https://github.com/UlugbekSalaev/UzSyllable},
+  note={Software available from https://github.com/UlugbekSalaev/UzSyllable},
   author={
     Ulugbek Salaev},
-  year={2022},
+  year={2023},
 }
 ```
 
