@@ -26,7 +26,7 @@ You can use [web interface](http://nlp.urdu.uz/?menu=uzsyllable).
 
 ## Usage
 
-Three options to run UzSyllable:
+Two options to run UzSyllable:
 
 - pip
 - Web interface
