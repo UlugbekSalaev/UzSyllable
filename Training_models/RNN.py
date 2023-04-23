@@ -1,56 +1,94 @@
-import numpy as np
 import pandas as pd
-from keras.models import Sequential
-from keras.layers import Dense, SimpleRNN
+import torch
+import random
+from sklearn.model_selection import train_test_split
+from transformers import BertTokenizer, BertForTokenClassification, AdamW
+from transformers import get_linear_schedule_with_warmup
 
-# Read the dataset file
-df = pd.read_csv('dataset.csv')
+# Set the random seed for reproducibility
+random.seed(42)
+torch.manual_seed(42)
 
-# Extract the "word" and "syllable" columns
-words = df['word'].tolist()
-syllables = df['syllable'].tolist()
+# Load the syllabification dataset
+df = pd.read_csv('uzbek_syllabification_dataset.csv')
 
-# Define a function to encode the dataset
-def encode_dataset(words, syllables):
-    # Create dictionaries for character to index and index to character mapping
-    chars = sorted(list(set(''.join(words))))
-    char_to_index = dict((c, i) for i, c in enumerate(chars))
-    index_to_char = dict((i, c) for i, c in enumerate(chars))
+# Split the dataset into training and validation sets
+train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
 
-    # Create input and output arrays
-    X = np.zeros((len(words), len(max(words, key=len)), len(chars)), dtype=np.bool)
-    y = np.zeros((len(words), len(max(syllables, key=len)), len(chars)), dtype=np.bool)
-    for i, word in enumerate(words):
-        for j, char in enumerate(word):
-            X[i, j, char_to_index[char]] = 1
-        for j, char in enumerate(syllables[i]):
-            y[i, j, char_to_index[char]] = 1
+# Define the BERT tokenizer for Uzbek language
+tokenizer = BertTokenizer.from_pretrained('coppercitylabs/uzbert-base-uncased', do_lower_case=False)
 
-    return X, y, char_to_index, index_to_char
+# Define the BERT model for token classification
+model = BertForTokenClassification.from_pretrained('coppercitylabs/uzbert-base-uncased', num_labels=2)
 
-# Encode the dataset
-X, y, char_to_index, index_to_char = encode_dataset(words, syllables)
+# Define the optimizer and the learning rate scheduler
+optimizer = AdamW(model.parameters(), lr=2e-5, eps=1e-8)
+total_steps = len(train_df) * 5
+scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=0, num_training_steps=total_steps)
 
-# Define the RNN model
-model = Sequential()
-model.add(SimpleRNN(64, input_shape=(len(max(words, key=len)), len(char_to_index))))
-model.add(Dense(len(char_to_index), activation='softmax'))
 
-# Compile the model
-model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+# Define the training function
+def train_model(model, tokenizer, optimizer, scheduler, train_df, val_df, batch_size, num_epochs):
+    # Create the dataloaders for the training and validation sets
+    train_loader = create_data_loader(train_df, tokenizer, batch_size)
+    val_loader = create_data_loader(val_df, tokenizer, batch_size)
 
-# Train the model
-model.fit(X, y, epochs=1000, batch_size=len(words))
+    # Set the device to GPU if available, otherwise to CPU
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model.to(device)
 
-# Test the model
-test_word = 'python'
-test_X = np.zeros((1, len(test_word), len(char_to_index)), dtype=np.bool)
-for i, char in enumerate(test_word):
-    test_X[0, i, char_to_index[char]] = 1
-prediction = model.predict(test_X)[0]
-predicted_syllables = []
-for i, char in enumerate(test_word):
-    if prediction[i, char_to_index['-']] > 0.5:
-        predicted_syllables.append('-')
-    predicted_syllables.append(char)
-print(test_word + ': ' + ''.join(predicted_syllables))
+    # Set the initial best validation loss to infinity
+    best_val_loss = float('inf')
+
+    # Train the model for the specified number of epochs
+    for epoch in range(num_epochs):
+        print(f'Epoch {epoch + 1}/{num_epochs}')
+        print('-' * 10)
+
+        # Set the model to training mode
+        model.train()
+
+        # Initialize the training loss accumulator
+        train_loss = 0.0
+
+        # Train the model on the training set
+        for batch in train_loader:
+            # Load the inputs and labels to the device
+            input_ids = batch['input_ids'].to(device)
+            attention_mask = batch['attention_mask'].to(device)
+            labels = batch['labels'].to(device)
+
+            # Zero the gradients
+            optimizer.zero_grad()
+
+            # Forward pass
+            outputs = model(input_ids, attention_mask=attention_mask, labels=labels)
+            loss = outputs.loss
+
+            # Backward pass
+            loss.backward()
+
+            # Update the optimizer and the learning rate scheduler
+            optimizer.step()
+            scheduler.step()
+
+            # Accumulate the training loss
+            train_loss += loss.item() * len(input_ids)
+
+        # Compute the average training loss
+        train_loss /= len(train_df)
+
+        # Print the training loss
+        print(f'Training loss: {train_loss:.4f}')
+
+        # Set the model to evaluation mode
+        model.eval()
+
+        # Initialize the validation loss and the number of correct
+        # predictions
+        val_loss = 0.0
+        num_correct = 0
+
+        # Evaluate the model on the validation set
+        with torch.no_grad():
+            for batch in
