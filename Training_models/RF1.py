@@ -4,11 +4,8 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from sklearn.model_selection import train_test_split
 
-# Step 1: Load the dataset
-data = pd.read_csv('data.csv')
-
 # Step 1: Data Preprocessing
-data = pd.read_csv('datac.csv')
+data = pd.read_csv('dataset.csv')
 # preprocess data as needed (e.g., remove duplicates, convert all words to lowercase)
 data['word'] = data['word'].apply(lambda x: re.sub('[^a-z]', '', x.lower()))
 data['num_vowels'] = data['word'].apply(lambda x: sum([1 for char in x if char in ['a', 'i', 'e', 'o', 'u', 'ō']]))
@@ -16,9 +13,9 @@ train_data, test_data = train_test_split(data, test_size=0.2)
 
 # Step 2: Feature Extraction
 X_train = train_data['num_vowels'].values.reshape(-1, 1)
-y_train = train_data['split_counts']
+y_train = train_data['count_syllables']
 X_test = test_data['num_vowels'].values.reshape(-1, 1)
-y_test = test_data['split_counts']
+y_test = test_data['count_syllables']
 
 # Step 3: Training the Model
 rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
