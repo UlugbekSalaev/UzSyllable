@@ -1,94 +1,58 @@
 import pandas as pd
-import torch
-import random
 from sklearn.model_selection import train_test_split
-from transformers import BertTokenizer, BertForTokenClassification, AdamW
-from transformers import get_linear_schedule_with_warmup
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
 
-# Set the random seed for reproducibility
-random.seed(42)
-torch.manual_seed(42)
+# Define the vowels and consonants
+vowels = ['a', 'i', 'e', 'o', 'u', 'ō']
+consonants = ['q', 'r', 't', 'y', 'p', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'v', 'b', 'n', 'm', 'ḡ', 'ş', 'ç', '’', '-']
 
-# Load the syllabification dataset
-df = pd.read_csv('uzbek_syllabification_dataset.csv')
+# Load the dataset
+df = pd.read_csv('data.csv')
 
-# Split the dataset into training and validation sets
-train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
+# Preprocess the dataset
+df['syllables'] = df['syllables'].str.split('-')
+df = df.explode('syllables') # Flatten the list of syllables
+df['word_len'] = df['word'].apply(len)
+df['vowels'] = df['word'].apply(lambda x: ''.join(filter(lambda c: c in vowels, x)))
+df['consonants'] = df['word'].apply(lambda x: ''.join(filter(lambda c: c in consonants, x)))
 
-# Define the BERT tokenizer for Uzbek language
-tokenizer = BertTokenizer.from_pretrained('coppercitylabs/uzbert-base-uncased', do_lower_case=False)
+# One-hot encode the vowel and consonant orders
+vowel_ohe = OneHotEncoder(categories=[range(len(vowels))])
+consonant_ohe = OneHotEncoder(categories=[range(len(consonants))])
 
-# Define the BERT model for token classification
-model = BertForTokenClassification.from_pretrained('coppercitylabs/uzbert-base-uncased', num_labels=2)
+df_vowels = pd.DataFrame(vowel_ohe.fit_transform(df['vowels'].apply(lambda x: [vowels.index(c) for c in x]).tolist()).toarray(), columns=[f'vowel_{i}' for i in range(len(vowels))], index=df.index)
+df_consonants = pd.DataFrame(consonant_ohe.fit_transform(df['consonants'].apply(lambda x: [consonants.index(c) for c in x]).tolist()).toarray(), columns=[f'consonant_{i}' for i in range(len(consonants))], index=df.index)
 
-# Define the optimizer and the learning rate scheduler
-optimizer = AdamW(model.parameters(), lr=2e-5, eps=1e-8)
-total_steps = len(train_df) * 5
-scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=0, num_training_steps=total_steps)
+df = pd.concat([df, df_vowels, df_consonants], axis=1)
+df = df.drop(['vowels', 'consonants'], axis=1)
 
+# Encode the target variable
+le = LabelEncoder()
+df['syllables'] = le.fit_transform(df['syllables'])
 
-# Define the training function
-def train_model(model, tokenizer, optimizer, scheduler, train_df, val_df, batch_size, num_epochs):
-    # Create the dataloaders for the training and validation sets
-    train_loader = create_data_loader(train_df, tokenizer, batch_size)
-    val_loader = create_data_loader(val_df, tokenizer, batch_size)
+# Split the dataset into training and testing sets
+X = df.drop(['word', 'syllables'], axis=1)
+y = df['syllables']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    # Set the device to GPU if available, otherwise to CPU
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model.to(device)
+# Train a random forest classifier
+rf = RandomForestClassifier(n_estimators=100, random_state=42)
+rf.fit(X_train, y_train)
 
-    # Set the initial best validation loss to infinity
-    best_val_loss = float('inf')
+# Evaluate the performance of the model on the testing set
+y_pred = rf.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy: {accuracy}")
 
-    # Train the model for the specified number of epochs
-    for epoch in range(num_epochs):
-        print(f'Epoch {epoch + 1}/{num_epochs}')
-        print('-' * 10)
-
-        # Set the model to training mode
-        model.train()
-
-        # Initialize the training loss accumulator
-        train_loss = 0.0
-
-        # Train the model on the training set
-        for batch in train_loader:
-            # Load the inputs and labels to the device
-            input_ids = batch['input_ids'].to(device)
-            attention_mask = batch['attention_mask'].to(device)
-            labels = batch['labels'].to(device)
-
-            # Zero the gradients
-            optimizer.zero_grad()
-
-            # Forward pass
-            outputs = model(input_ids, attention_mask=attention_mask, labels=labels)
-            loss = outputs.loss
-
-            # Backward pass
-            loss.backward()
-
-            # Update the optimizer and the learning rate scheduler
-            optimizer.step()
-            scheduler.step()
-
-            # Accumulate the training loss
-            train_loss += loss.item() * len(input_ids)
-
-        # Compute the average training loss
-        train_loss /= len(train_df)
-
-        # Print the training loss
-        print(f'Training loss: {train_loss:.4f}')
-
-        # Set the model to evaluation mode
-        model.eval()
-
-        # Initialize the validation loss and the number of correct
-        # predictions
-        val_loss = 0.0
-        num_correct = 0
-
-        # Evaluate the model on the validation set
-        with torch.no_grad():
-            for batch in
+new_word = 'olam'
+vowels_in_word = ''.join(filter(lambda c: c in vowels, new_word))
+consonants_in_word = ''.join(filter(lambda c: c in consonants, new_word))
+vowel_order = ''.join([str(vowels.index(c)) for c in vowels_in_word])
+consonant_order = ''.join([str(consonants.index(c)) for c in consonants_in_word])
+word_len = len(new_word)
+features = [[vowel_order, consonant_order, word_len]]
+syllable_idx = rf.predict(features)[0]
+syllables = le.inverse_transform([syllable_idx])[0]
+print(f"Syllables of '{new_word}': {syllables.split('-')}")
