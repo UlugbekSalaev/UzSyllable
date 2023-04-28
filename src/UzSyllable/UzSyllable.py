@@ -1,5 +1,5 @@
 def syllables(text):
-    tokens = proccesing(text)
+    tokens = processing(text)
     sylls = list()
     for token in tokens:
         count = 0
