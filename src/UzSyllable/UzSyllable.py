@@ -1,9 +1,9 @@
 def syllables(text):
-    tokens = text.split()
+    tokens = proccesing(text)
     sylls = list()
     for token in tokens:
         count = 0
-        vowels = set("AaEeUuOoIi")
+        vowels = set("AaEeUuOoIiАаОоУуИиЯяЕеЁёЮюЭэЎў")
         syll = list()
         start = 0
         for letter in token:
@@ -88,6 +88,11 @@ def syllables(text):
                     str += '-'
         sylls.append(str[0:len(str)-1])
     return sylls
+def processing(text):
+    text = str(text)
+    text = text.replace("O'", "O‘").replace("o'", "o‘").replace("G'", "G‘").replace("g'", "g‘").replace("'", "’")
+    tokens = text.split()
+    return tokens
 def line_break(text):
     word = text
     syllable = ' '.join(syllables(text))
