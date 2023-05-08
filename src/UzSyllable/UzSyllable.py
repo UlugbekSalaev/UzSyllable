@@ -92,8 +92,7 @@ def processing(text):
     text = str(text)
     text = text.replace("`", "'")
     text = text.replace("O'", "O‘").replace("o'", "o‘").replace("G'", "G‘").replace("g'", "g‘").replace("'", "’")
-    tokens = text.split()
-    return tokens
+    return text.split()
 def line_break(text):
     word = text
     syllable = ' '.join(syllables(text))
