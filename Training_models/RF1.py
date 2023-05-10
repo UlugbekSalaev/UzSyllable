@@ -5,7 +5,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from sklearn.model_selection import train_test_split
 
 # Step 1: Data Preprocessing
-data = pd.read_csv('dataset.csv')
+data = pd.read_csv('../dataset/dataset.csv')
 # preprocess data as needed (e.g., remove duplicates, convert all words to lowercase)
 data['word'] = data['word'].apply(lambda x: re.sub('[^a-z]', '', x.lower()))
 data['num_vowels'] = data['word'].apply(lambda x: sum([1 for char in x if char in ['a', 'i', 'e', 'o', 'u', 'ō']]))

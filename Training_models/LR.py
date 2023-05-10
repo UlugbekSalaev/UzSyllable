@@ -4,7 +4,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.tree import DecisionTreeClassifier
 
 # Step 1: Load the dataset
-data = pd.read_csv('dataset.csv')
+data = pd.read_csv('../dataset/dataset.csv')
 
 # Step 2: Split the syllables into a list
 data['syllables'] = data['syllables'].apply(lambda x: x.split('-') if isinstance(x, str) else [])

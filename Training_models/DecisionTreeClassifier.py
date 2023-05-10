@@ -3,7 +3,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 
 # Load the CSV file into a pandas DataFrame
-df = pd.read_csv('dataset.csv')
+df = pd.read_csv('../dataset/dataset.csv')
 
 # Extract the words and syllables from the DataFrame
 words = list(df['word'])

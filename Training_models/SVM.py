@@ -3,7 +3,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import cross_val_score
 
 # Load the syllabification dataset
-df = pd.read_csv('dataset.csv')
+df = pd.read_csv('../dataset/dataset.csv')
 
 # Separate the features (X) and target (y)
 X = df['word']
