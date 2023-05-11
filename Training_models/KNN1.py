@@ -1,7 +1,6 @@
-# joriy lotin alifbosi uchun syllable count
 import pandas as pd
 import re
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from sklearn.model_selection import train_test_split, cross_val_score
 import numpy as np
@@ -20,11 +19,11 @@ X_test = test_data['num_vowels'].values.reshape(-1, 1)
 y_test = test_data['count_syllables']
 
 # Step 3: Training the Model
-rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
-rf_model.fit(X_train, y_train)
+knn_model = KNeighborsClassifier(n_neighbors=5)
+knn_model.fit(X_train, y_train)
 
 # Step 4: Evaluating the Model
-y_pred = rf_model.predict(X_test)
+y_pred = knn_model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred.round())
 precision = precision_score(y_test, y_pred.round(), average='weighted')
 recall = recall_score(y_test, y_pred.round(), average='weighted')
@@ -32,7 +31,7 @@ f1 = f1_score(y_test, y_pred.round(), average='weighted')
 print(f'Accuracy: {accuracy}, Precision: {precision}, Recall: {recall}, F1 Score: {f1}')
 
 # Cross-validation
-cv_scores = cross_val_score(svm_model, X_train, y_train, cv=10)
+cv_scores = cross_val_score(knn_model, X_train, y_train, cv=10)
 mean_cv_score = np.mean(cv_scores)
 std_cv_score = np.std(cv_scores)
 
@@ -44,5 +43,5 @@ while True:
     new_word = input()
     new_word = re.sub('[^a-z]', '', new_word.lower())
     new_word_vowels = sum([1 for char in new_word if char in ['a', 'i', 'e', 'o', 'u']])
-    predicted_syllables = rf_model.predict([[new_word_vowels]])[0]
+    predicted_syllables = knn_model.predict([[new_word_vowels]])[0]
     print(f'The word "{new_word}" has an estimated {predicted_syllables.round()} syllables.')
