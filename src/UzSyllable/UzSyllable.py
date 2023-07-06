@@ -93,7 +93,7 @@ def processing(text):
     text = text.replace("`", "'")
     text = text.replace("O'", "O‘").replace("o'", "o‘").replace("G'", "G‘").replace("g'", "g‘").replace("'", "’")
     return text.split()
-def line_break(text):
+def hyphenation(text):
     word = text
     syllable = ' '.join(syllables(text))
     begin = end = ''

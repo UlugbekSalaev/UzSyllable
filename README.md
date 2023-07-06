@@ -48,7 +48,7 @@ print(UzSyllable.syllables('maktabimda'))
 print(UzSyllable.syllables('мактабимда'))
 # Output : ['мак-та-бим-да']
 # call end-of-line method
-print(UzSyllable.line_break('maktabimda'))
+print(UzSyllable.hyphenation('maktabimda'))
 # Output : ['mak-tabimda', 'makta-bimda', 'maktabim-da']
 # call count of syllables method
 print(UzSyllable.count('maktabimda'))

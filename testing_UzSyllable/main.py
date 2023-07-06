@@ -11,7 +11,7 @@ with open('dataset.csv', mode='r') as file:
         line_break = row[2]
         count += 1
         answer_syll = ' '.join(UzSyllable.syllables(word))
-        answer_line = ' '.join(UzSyllable.line_break(word))
+        answer_line = ' '.join(UzSyllable.hyphenation(word))
         check_syll = False
         check_line = False
         if syllable == answer_syll:
