@@ -52,7 +52,7 @@ print(syllables('мактабимда'))
 ### Hyphenation
 ```code
 from UzSyllable import hyphenation
-# call end-of-line method
+# call hyphenation method
 print(hyphenation('maktabimda'))
 # Output : ['mak-tabimda', 'makta-bimda', 'maktabim-da']
 ```
