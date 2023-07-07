@@ -41,7 +41,7 @@ pip install UzSyllable
 
 After installation, use in python like following:
 
-Syllabification
+### Syllabification
 ```code
 from UzSyllable import syllables
 print(syllables('maktabimda'))
@@ -51,7 +51,7 @@ print(syllables('мактабимда'))
 # Output : ['мак-та-бим-да']
 ```
 
-Hyphenation
+### Hyphenation
 ```code
 from UzSyllable import hyphenation
 # call end-of-line method
@@ -59,7 +59,7 @@ print(hyphenation('maktabimda'))
 # Output : ['mak-tabimda', 'makta-bimda', 'maktabim-da']
 ```
 
-Count of Syllables
+### Count of Syllables
 ```code
 from UzSyllable import count
 # call count of syllables method
