@@ -21,7 +21,7 @@ You can use [web interface](http://nlp.urdu.uz/?menu=uzsyllable).
 ## Features
 
 - Syllabification
-- End-of-Line
+- Hyphenation
 - Count of Syllables
 
 ## Usage
@@ -40,18 +40,30 @@ pip install UzSyllable
 ```
 
 After installation, use in python like following:
-```yml
-import UzSyllable
-# call syllables method
-print(UzSyllable.syllables('maktabimda'))
+
+Syllabification
+```code
+from UzSyllable import syllables
+print(syllables('maktabimda'))
 # Output : ['mak-ta-bim-da']
-print(UzSyllable.syllables('мактабимда'))
+
+print(syllables('мактабимда'))
 # Output : ['мак-та-бим-да']
+```
+
+Hyphenation
+```code
+from UzSyllable import hyphenation
 # call end-of-line method
-print(UzSyllable.hyphenation('maktabimda'))
+print(hyphenation('maktabimda'))
 # Output : ['mak-tabimda', 'makta-bimda', 'maktabim-da']
+```
+
+Count of Syllables
+```code
+from UzSyllable import count
 # call count of syllables method
-print(UzSyllable.count('maktabimda'))
+print(count('maktabimda'))
 # Output : 4
 ```
 
