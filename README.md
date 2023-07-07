@@ -14,9 +14,6 @@ The UzSyllable project is a text processing tool that includes three main method
 - [PyPI](https://pypi.org/project/UzSyllable/)
 - [Web-UI](https://nlp.urdu.uz/?menu=uzsyllable)
 
-## Demo
-
-You can use [web interface](http://nlp.urdu.uz/?menu=uzsyllable).
 
 ## Features
 
@@ -30,6 +27,7 @@ Two options to run UzSyllable:
 
 - pip
 - Web interface
+- API
 
 ### pip installation
 
@@ -68,9 +66,10 @@ print(count('maktabimda'))
 ```
 
 
-## Documentation
+## Web interface
 
-See [here](https://github.com/UlugbekSalaev/UzSyllable).
+You can use [web interface](https://nlp.urdu.uz/?menu=uzsyllable).
+
 
 ## Citation
 
