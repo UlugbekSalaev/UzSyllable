@@ -74,12 +74,30 @@ You can use [web interface](https://nlp.urdu.uz/?menu=uzsyllable).
 
 
 ## API
-You can use [API](https://nlp.urdu.uz/?menu=uzsyllable).
 
-<img width="1437" alt="image" src="https://github.com/UlugbekSalaev/UzSyllable/assets/71002671/4e6c591c-8f4f-4ed6-8844-0d4baefa1a0a">
-<br>
-<br>
-<img width="1437" alt="image" src="https://github.com/UlugbekSalaev/UzSyllable/assets/71002671/35a62a1b-0e70-4405-8cbf-56f0259f5cb1">
+### Syllabification
+
+#### URL: https://api.urdu.uz/syllables
+#### Method: POST
+#### Parametres: word
+#### Example Request: https://api.urdu.uz/syllables?word=maktab
+
+
+### Hyphenation
+
+#### URL: https://api.urdu.uz/line-break-syllables
+#### Method: POST
+#### Parametres: word
+#### Example Request: https://api.urdu.uz/line-break-syllables?word=maktabgacha
+
+
+### Count of Syllables
+
+#### URL: https://api.urdu.uz/count-syllables
+#### Method: POST
+#### Parametres: word
+#### Example Request: https://api.urdu.uz/count-syllables?word=maktabgacha
+
 
 ## Citation
 
