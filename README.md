@@ -76,6 +76,10 @@ You can use [web interface](https://nlp.urdu.uz/?menu=uzsyllable).
 <img width="634" alt="image" src="https://github.com/UlugbekSalaev/UzSyllable/assets/71002671/ee3bc563-35d8-4d15-bcd0-6cbad8a6107a">
 
 
+## API
+You can use [API](https://nlp.urdu.uz/?menu=uzsyllable).
+<img width="1437" alt="image" src="https://github.com/UlugbekSalaev/UzSyllable/assets/71002671/4e6c591c-8f4f-4ed6-8844-0d4baefa1a0a">
+
 ## Citation
 
 ```tex
