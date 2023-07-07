@@ -23,10 +23,10 @@ The UzSyllable project is a text processing tool that includes three main method
 
 ## Usage
 
-Two options to run UzSyllable:
+Three options to use UzSyllable:
 
 - pip
-- Web interface
+- Web tool
 - API
 
 ## pip installation
