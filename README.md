@@ -77,26 +77,26 @@ You can use [web interface](https://nlp.urdu.uz/?menu=uzsyllable).
 
 ### Syllabification
 
-#### URL: https://api.urdu.uz/syllables
-#### Method: POST
-#### Parametres: word
-#### Example Request: https://api.urdu.uz/syllables?word=maktab
+- #### URL: https://api.urdu.uz/syllables
+- #### Method: POST
+- #### Parametres: word
+- #### Example Request: https://api.urdu.uz/syllables?word=maktab
 
 
 ### Hyphenation
 
-#### URL: https://api.urdu.uz/line-break-syllables
-#### Method: POST
-#### Parametres: word
-#### Example Request: https://api.urdu.uz/line-break-syllables?word=maktabgacha
+- #### URL: https://api.urdu.uz/line-break-syllables
+- #### Method: POST
+- #### Parametres: word
+- #### Example Request: https://api.urdu.uz/line-break-syllables?word=maktabgacha
 
 
 ### Count of Syllables
 
-#### URL: https://api.urdu.uz/count-syllables
-#### Method: POST
-#### Parametres: word
-#### Example Request: https://api.urdu.uz/count-syllables?word=maktabgacha
+- #### URL: https://api.urdu.uz/count-syllables
+- #### Method: POST
+- #### Parametres: word
+- #### Example Request: https://api.urdu.uz/count-syllables?word=maktabgacha
 
 
 ## Citation
