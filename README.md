@@ -29,7 +29,7 @@ Two options to run UzSyllable:
 - Web interface
 - API
 
-### pip installation
+## pip installation
 
 To install UzSyllable, simply run:
 
@@ -69,6 +69,10 @@ print(count('maktabimda'))
 ## Web interface
 
 You can use [web interface](https://nlp.urdu.uz/?menu=uzsyllable).
+
+<img width="634" alt="image" src="https://github.com/UlugbekSalaev/UzSyllable/assets/71002671/3c07a711-b961-40aa-9375-4f85441bcedd">
+
+<img width="634" alt="image" src="https://github.com/UlugbekSalaev/UzSyllable/assets/71002671/ee3bc563-35d8-4d15-bcd0-6cbad8a6107a">
 
 
 ## Citation
