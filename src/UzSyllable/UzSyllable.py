@@ -108,20 +108,22 @@ def hyphenation(text):
     tokens = syllable.split('-')
     count = len(tokens) - 1
     for j in range(1, len(tokens)):
-        w = ''
-        for i in range(0, j):
-            w += tokens[i]
-        if len(tokens[j - 1]) != 1 and not tokens[j - 1].__contains__(chr(8217)):
-            w += '-'
-        for i in range(j, len(tokens)):
-            w += tokens[i]
-        if begin != end != '':
-            for i in range(0, len(w) - 1):
-                if w[i] == begin and w[i + 1] == end:
-                    w = w[0:i + 1] + '-' + w[i + 1:len(w)]
-                    break
-        if w != word or count == 1 or word.__contains__('-') and w not in lines:
-            lines.append(w)
+        if len(tokens[j]) != 1:
+            w = ''
+            for i in range(0, j):
+                w += tokens[i]
+            if len(tokens[j - 1]) != 1 and not tokens[j - 1].__contains__(chr(8217)):
+                w += '-'
+            for i in range(j, len(tokens)):
+                if len(tokens[i]):
+                    w += tokens[i]
+            if begin != end != '' and len(end):
+                for i in range(0, len(w) - 1):
+                    if w[i] == begin and w[i + 1] == end:
+                        w = w[0:i + 1] + '-' + w[i + 1:len(w)]
+                        break
+            if w != word or count == 1 or word.__contains__('-') and w not in lines:
+                lines.append(w)
     return lines
 def count(text):
     tokens = syllables(text)
