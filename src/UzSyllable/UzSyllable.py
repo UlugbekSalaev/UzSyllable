@@ -10,6 +10,9 @@ def syllables(text):
             for i in range(65, 91):
                 if ord(letter) == i:
                     count += 1
+            for i in range(1040, 1072):
+                if ord(letter) == i:
+                    count += 1
         if count > 1:
             sylls.append(token)
             continue
