@@ -31,6 +31,14 @@ recall = recall_score(y_test, y_pred.round(), average='weighted')
 f1 = f1_score(y_test, y_pred.round(), average='weighted')
 print(f'Accuracy: {accuracy}, Precision: {precision}, Recall: {recall}, F1 Score: {f1}')
 
+# Cross-validation
+cv_scores = cross_val_score(rf_model, X_train, y_train, cv=10)
+mean_cv_score = np.mean(cv_scores)
+std_cv_score = np.std(cv_scores)
+
+print(f'Accuracy: {accuracy}, Precision: {precision}, Recall: {recall}, F1 Score: {f1}')
+print(f'Cross-validation Mean Score: {mean_cv_score}, Standard Deviation: {std_cv_score}')
+
 # Step 5: Using the Model
 while True:
     new_word = input()
