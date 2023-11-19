@@ -1,11 +1,11 @@
-# Random Forest classifier,
-#     accuracy                           0.98     12725
-#    macro avg       0.66      0.69      0.67     12725
-# weighted avg       0.97      0.98      0.97     12725
+# SVM
+#     accuracy                           0.95     12725
+#    macro avg       0.40      0.47      0.42     12725
+# weighted avg       0.92      0.95      0.93     12725
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import LabelEncoder
 from sklearn.impute import SimpleImputer
@@ -31,8 +31,8 @@ X = imputer.fit_transform(X)
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Define and train the model (Random Forest as an example)
-model = RandomForestClassifier(n_estimators=100, random_state=42)
+# Define and train the model (Support Vector Machine with linear kernel)
+model = SVC(kernel='linear', random_state=42)
 model.fit(X_train, y_train)
 
 # Predict syllables for the test set

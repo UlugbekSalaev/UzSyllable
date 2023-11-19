@@ -1,7 +1,9 @@
+# GRU layer in place of LSTM
+# Test Accuracy: 0.7463850975036621
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, LSTM, Dense
+from tensorflow.keras.layers import Embedding, GRU, Dense
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
@@ -31,23 +33,22 @@ X_test_words_padded = pad_sequences(X_test_words)
 
 # Ensure that the padding of sequences is consistent with the number of units in the output layer
 num_syllables = len(tokenizer_syllables.word_index) + 1
-print(num_syllables)
 
 y_train_syllables_padded = pad_sequences(y_train_syllables, maxlen=X_train_words_padded.shape[1])
 y_test_syllables_padded = pad_sequences(y_test_syllables, maxlen=X_test_words_padded.shape[1])
 
-# Define the model
+# Define the model with GRU layer
 model = Sequential()
-model.add(Embedding(input_dim=len(tokenizer_words.word_index) + 1, output_dim=300, input_length=X_train_words_padded.shape[1]))
-model.add(LSTM(100, return_sequences=True))
+model.add(Embedding(input_dim=len(tokenizer_words.word_index) + 1, output_dim=100, input_length=X_train_words_padded.shape[1]))
+model.add(GRU(100, return_sequences=True))
 model.add(Dense(num_syllables, activation='softmax'))
 
 # Compile the model
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
 # Train the model
-model.fit(X_train_words_padded, y_train_syllables_padded, epochs=5, batch_size=32, validation_split=0.2)
+model.fit(X_train_words_padded, y_train_syllables_padded, epochs=10, batch_size=1, validation_split=0.2)
 
 # Evaluate the model on the test set
-loss, accuracy = model.evaluate(X_test_words_padded, y_test_syllables_padded)
-print(f"Model Accuracy on Test Set: {accuracy}")
+accuracy = model.evaluate(X_test_words_padded, y_test_syllables_padded)[1]
+print(f"Test Accuracy: {accuracy}")

@@ -1,7 +1,9 @@
+#  1D Convolutional Neural Network (CNN)
+#  error barib turubdi
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, LSTM, Dense
+from tensorflow.keras.layers import Embedding, Conv1D, GlobalMaxPooling1D, Dense
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
@@ -29,17 +31,24 @@ y_test_syllables = tokenizer_syllables.texts_to_sequences(test_data['syllables']
 X_train_words_padded = pad_sequences(X_train_words)
 X_test_words_padded = pad_sequences(X_test_words)
 
+# Ensure that the padding of sequences is consistent
+max_seq_length = max(X_train_words_padded.shape[1], X_test_words_padded.shape[1])
+
+X_train_words_padded = pad_sequences(X_train_words, maxlen=max_seq_length)
+X_test_words_padded = pad_sequences(X_test_words, maxlen=max_seq_length)
+
+# Ensure that the padding of syllables is consistent
+y_train_syllables_padded = pad_sequences(y_train_syllables, maxlen=max_seq_length)
+y_test_syllables_padded = pad_sequences(y_test_syllables, maxlen=max_seq_length)
+
 # Ensure that the padding of sequences is consistent with the number of units in the output layer
 num_syllables = len(tokenizer_syllables.word_index) + 1
-print(num_syllables)
 
-y_train_syllables_padded = pad_sequences(y_train_syllables, maxlen=X_train_words_padded.shape[1])
-y_test_syllables_padded = pad_sequences(y_test_syllables, maxlen=X_test_words_padded.shape[1])
-
-# Define the model
+# Define the model with 1D CNN layer
 model = Sequential()
-model.add(Embedding(input_dim=len(tokenizer_words.word_index) + 1, output_dim=300, input_length=X_train_words_padded.shape[1]))
-model.add(LSTM(100, return_sequences=True))
+model.add(Embedding(input_dim=len(tokenizer_words.word_index) + 1, output_dim=100, input_length=X_train_words_padded.shape[1]))
+model.add(Conv1D(128, 5, activation='relu'))
+model.add(GlobalMaxPooling1D())
 model.add(Dense(num_syllables, activation='softmax'))
 
 # Compile the model
@@ -49,5 +58,5 @@ model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=
 model.fit(X_train_words_padded, y_train_syllables_padded, epochs=5, batch_size=32, validation_split=0.2)
 
 # Evaluate the model on the test set
-loss, accuracy = model.evaluate(X_test_words_padded, y_test_syllables_padded)
-print(f"Model Accuracy on Test Set: {accuracy}")
+accuracy = model.evaluate(X_test_words_padded, y_test_syllables_padded)[1]
+print(f"Test Accuracy: {accuracy}")
