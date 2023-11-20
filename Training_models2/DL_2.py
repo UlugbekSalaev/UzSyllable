@@ -1,6 +1,18 @@
 # unidirectional LSTM
-# 0.7503863573074341
-
+'''
+Epoch 1/5
+7753/7753 [==============================] - 779s 91ms/step - loss: 1.1835 - accuracy: 0.7069 - val_loss: 1.1267 - val_accuracy: 0.7189
+Epoch 2/5
+7753/7753 [==============================] - 593s 76ms/step - loss: 1.1201 - accuracy: 0.7200 - val_loss: 1.1118 - val_accuracy: 0.7219
+Epoch 3/5
+7753/7753 [==============================] - 499s 64ms/step - loss: 1.1087 - accuracy: 0.7222 - val_loss: 1.1065 - val_accuracy: 0.7224
+Epoch 4/5
+7753/7753 [==============================] - 496s 64ms/step - loss: 1.1022 - accuracy: 0.7234 - val_loss: 1.1023 - val_accuracy: 0.7234
+Epoch 5/5
+7753/7753 [==============================] - 452s 58ms/step - loss: 1.0978 - accuracy: 0.7243 - val_loss: 1.0989 - val_accuracy: 0.7239
+2423/2423 [==============================] - 13s 5ms/step - loss: 1.5632 - accuracy: 0.6039
+Test Accuracy: 0.6038864850997925
+'''
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.models import Sequential

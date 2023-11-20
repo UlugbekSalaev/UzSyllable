@@ -1,10 +1,10 @@
 import pandas as pd
 
 # Replace 'input_file.csv' with the path to your input CSV file
-input_file_path = 'dataset_latinCV_do.csv'
+input_file_path = 'newsyllable_w.csv'
 
 # Read the CSV file into a pandas DataFrame
-df = pd.read_csv(input_file_path)
+df = pd.read_csv(input_file_path, encoding="utf8")
 
 # Define lists of vowels and consonants
 vowels = ['a', 'u', 'i', 'o', 'e', 'ō']
@@ -19,7 +19,9 @@ def replace_letters(word):
         elif letter.lower() in consonants:
             modified_word += 'C'
         else:
-            if letter!="-": print(letter)
+            if letter!="-":
+                print(letter, word)
+                return ""
             modified_word += letter
     return modified_word
 
@@ -27,7 +29,7 @@ def replace_letters(word):
 df_replaced = df.applymap(replace_letters)
 
 # Replace 'output_file_modified.csv' with the desired path for the output CSV file
-output_file_path = 'dataset_latinCV_1.csv'
+output_file_path = 'newsyllableCV.csv'
 
 # Save the modified DataFrame to another CSV file
 df_replaced.to_csv(output_file_path, index=False)

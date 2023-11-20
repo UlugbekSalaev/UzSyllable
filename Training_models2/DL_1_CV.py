@@ -2,15 +2,15 @@
 Bidirectional LSTM (BiLSTM) followed by a TimeDistributed Dense layer
 This model architecture introduces a Bidirectional LSTM layer, which processes the input sequence from both forward and backward directions. The TimeDistributed Dense layer is used to apply the Dense layer to each time step independently.
 Epoch 1/5
-7753/7753 [==============================] - 308s 39ms/step - loss: 0.1939 - accuracy: 0.9413 - val_loss: 0.0235 - val_accuracy: 0.9939
+7752/7752 [==============================] - 371s 46ms/step - loss: 0.0831 - accuracy: 0.9682 - val_loss: 0.0286 - val_accuracy: 0.9931
 Epoch 2/5
-7753/7753 [==============================] - 778s 100ms/step - loss: 0.0194 - accuracy: 0.9949 - val_loss: 0.0131 - val_accuracy: 0.9966
+7752/7752 [==============================] - 850s 110ms/step - loss: 0.0264 - accuracy: 0.9938 - val_loss: 0.0246 - val_accuracy: 0.9943
 Epoch 3/5
-7753/7753 [==============================] - 745s 96ms/step - loss: 0.0116 - accuracy: 0.9970 - val_loss: 0.0080 - val_accuracy: 0.9979
+7752/7752 [==============================] - 635s 82ms/step - loss: 0.0246 - accuracy: 0.9943 - val_loss: 0.0241 - val_accuracy: 0.9944
 Epoch 4/5
-7753/7753 [==============================] - 649s 84ms/step - loss: 0.0086 - accuracy: 0.9978 - val_loss: 0.0078 - val_accuracy: 0.9979
+7752/7752 [==============================] - 590s 76ms/step - loss: 0.0237 - accuracy: 0.9945 - val_loss: 0.0234 - val_accuracy: 0.9946
 Epoch 5/5
-7753/7753 [==============================] - 656s 85ms/step - loss: 0.0070 - accuracy: 0.9982 - val_loss: 0.0069 - val_accuracy: 0.9981
+7752/7752 [==============================] - 604s 78ms/step - loss: 0.0234 - accuracy: 0.9945 - val_loss: 0.0231 - val_accuracy: 0.9946
 '''
 
 import pandas as pd
@@ -23,7 +23,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 
 
 # Load your dataset from CSV
-df = pd.read_csv("../dataset/newsyllable.csv")
+df = pd.read_csv("../dataset/newsyllableCV.csv")
 
 # Split the data into training and testing sets
 train_data, test_data = train_test_split(df, test_size=0.2, random_state=42)
