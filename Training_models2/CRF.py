@@ -11,7 +11,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.impute import SimpleImputer
 
 # Load the dataset
-df = pd.read_csv('../dataset/dataset_latinCV_1.csv')  # Replace 'your_second_dataset.csv' with the actual file path
+df = pd.read_csv('../dataset/newsyllableCV.csv')  # Replace 'your_second_dataset.csv' with the actual file path
 
 # Encode C and V characters using LabelEncoder
 le_syllable = LabelEncoder()

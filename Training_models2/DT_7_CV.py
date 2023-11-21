@@ -1,31 +1,30 @@
-#  This model uses an embedding layer followed by a bidirectional LSTM layer and a time-distributed dense layer.
-#  Bidirectional LSTM
+# combining a Bidirectional GRU layer and a Dense layer:
+# Bidirectional GRU layer
 '''
 Epoch 1/5
-7753/7753 [==============================] - 185s 24ms/step - loss: 0.2366 - accuracy: 0.9266 - val_loss: 0.0275 - val_accuracy: 0.9926
+7752/7752 [==============================] - 281s 35ms/step - loss: 0.0747 - accuracy: 0.9725 - val_loss: 0.0329 - val_accuracy: 0.9924
 Epoch 2/5
-7753/7753 [==============================] - 200s 26ms/step - loss: 0.0199 - accuracy: 0.9948 - val_loss: 0.0122 - val_accuracy: 0.9968
+7752/7752 [==============================] - 192s 25ms/step - loss: 0.0288 - accuracy: 0.9934 - val_loss: 0.0274 - val_accuracy: 0.9937
 Epoch 3/5
-7753/7753 [==============================] - 249s 32ms/step - loss: 0.0113 - accuracy: 0.9970 - val_loss: 0.0091 - val_accuracy: 0.9977
+7752/7752 [==============================] - 352s 45ms/step - loss: 0.0275 - accuracy: 0.9937 - val_loss: 0.0276 - val_accuracy: 0.9937
 Epoch 4/5
-7753/7753 [==============================] - 290s 37ms/step - loss: 0.0080 - accuracy: 0.9979 - val_loss: 0.0075 - val_accuracy: 0.9980
+7752/7752 [==============================] - 365s 47ms/step - loss: 0.0267 - accuracy: 0.9938 - val_loss: 0.0272 - val_accuracy: 0.9937
 Epoch 5/5
-7753/7753 [==============================] - 295s 38ms/step - loss: 0.0067 - accuracy: 0.9982 - val_loss: 0.0078 - val_accuracy: 0.9981
-2423/2423 [==============================] - 29s 11ms/step
-2023-11-20 22:20:30.345810: W tensorflow/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 224831200 exceeds 10% of free system memory.
-Test Accuracy: 0.9981080383861315
-weighted avg       1.00      1.00      1.00   1938200
+7752/7752 [==============================] - 309s 40ms/step - loss: 0.0263 - accuracy: 0.9938 - val_loss: 0.0259 - val_accuracy: 0.9939
+2423/2423 [==============================] - 36s 13ms/step
+Test Accuracy: 0.9940786418287837
+weighted avg       0.99      0.99      0.99   1937900
 '''
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, Bidirectional, LSTM, TimeDistributed, Dense
+from tensorflow.keras.layers import Embedding, Bidirectional, GRU, Dense, TimeDistributed
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sklearn.metrics import accuracy_score, classification_report
 
 # Load your dataset from CSV
-df = pd.read_csv("../dataset/newsyllable.csv")
+df = pd.read_csv("../dataset/newsyllableCV.csv")
 
 # Split the data into training and testing sets
 train_data, test_data = train_test_split(df, test_size=0.2, random_state=42)
@@ -45,7 +44,7 @@ y_train_syllables = tokenizer_syllables.texts_to_sequences(train_data['syllables
 y_test_syllables = tokenizer_syllables.texts_to_sequences(test_data['syllables'])
 
 # Pad sequences to the same length
-X_train_words_padded = pad_sequences(X_train_words, maxlen=25)  # Set maxlen to the desired sequence length
+X_train_words_padded = pad_sequences(X_train_words, maxlen=25)
 X_test_words_padded = pad_sequences(X_test_words, maxlen=25)
 
 # Ensure that the padding of sequences is consistent with the number of units in the output layer
@@ -60,8 +59,8 @@ y_test_syllables_padded = pad_sequences(y_test_syllables, maxlen=X_test_words_pa
 
 # Define the neural network model
 model = Sequential()
-model.add(Embedding(input_dim=len(tokenizer_words.word_index) + 1, output_dim=100, input_length=25))  # Adjust input_length
-model.add(Bidirectional(LSTM(100, return_sequences=True)))
+model.add(Embedding(input_dim=len(tokenizer_words.word_index) + 1, output_dim=100, input_length=25))
+model.add(Bidirectional(GRU(100, return_sequences=True)))
 model.add(TimeDistributed(Dense(num_syllables, activation='softmax')))
 
 # Compile the model

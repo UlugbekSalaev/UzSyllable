@@ -1,31 +1,16 @@
-#  This model uses an embedding layer followed by a bidirectional LSTM layer and a time-distributed dense layer.
-#  Bidirectional LSTM
-'''
-Epoch 1/5
-7753/7753 [==============================] - 185s 24ms/step - loss: 0.2366 - accuracy: 0.9266 - val_loss: 0.0275 - val_accuracy: 0.9926
-Epoch 2/5
-7753/7753 [==============================] - 200s 26ms/step - loss: 0.0199 - accuracy: 0.9948 - val_loss: 0.0122 - val_accuracy: 0.9968
-Epoch 3/5
-7753/7753 [==============================] - 249s 32ms/step - loss: 0.0113 - accuracy: 0.9970 - val_loss: 0.0091 - val_accuracy: 0.9977
-Epoch 4/5
-7753/7753 [==============================] - 290s 37ms/step - loss: 0.0080 - accuracy: 0.9979 - val_loss: 0.0075 - val_accuracy: 0.9980
-Epoch 5/5
-7753/7753 [==============================] - 295s 38ms/step - loss: 0.0067 - accuracy: 0.9982 - val_loss: 0.0078 - val_accuracy: 0.9981
-2423/2423 [==============================] - 29s 11ms/step
-2023-11-20 22:20:30.345810: W tensorflow/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 224831200 exceeds 10% of free system memory.
-Test Accuracy: 0.9981080383861315
-weighted avg       1.00      1.00      1.00   1938200
-'''
+# pip install tensorflow-addons
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, Bidirectional, LSTM, TimeDistributed, Dense
+import tensorflow as tf
+import tensorflow_addons as tfa
+from tensorflow.keras.layers import Input, Embedding, Dense, Dropout
+from tensorflow.keras.models import Model
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sklearn.metrics import accuracy_score, classification_report
 
 # Load your dataset from CSV
-df = pd.read_csv("../dataset/newsyllable.csv")
+df = pd.read_csv("../dataset/newsyllableCV.csv")
 
 # Split the data into training and testing sets
 train_data, test_data = train_test_split(df, test_size=0.2, random_state=42)
@@ -45,7 +30,7 @@ y_train_syllables = tokenizer_syllables.texts_to_sequences(train_data['syllables
 y_test_syllables = tokenizer_syllables.texts_to_sequences(test_data['syllables'])
 
 # Pad sequences to the same length
-X_train_words_padded = pad_sequences(X_train_words, maxlen=25)  # Set maxlen to the desired sequence length
+X_train_words_padded = pad_sequences(X_train_words, maxlen=25)
 X_test_words_padded = pad_sequences(X_test_words, maxlen=25)
 
 # Ensure that the padding of sequences is consistent with the number of units in the output layer
@@ -55,14 +40,29 @@ y_test_syllables_padded = pad_sequences(y_test_syllables, maxlen=25)
 # Ensure that the padding of sequences is consistent with the number of units in the output layer
 num_syllables = len(tokenizer_syllables.word_index) + 1
 
-y_train_syllables_padded = pad_sequences(y_train_syllables, maxlen=X_train_words_padded.shape[1])
-y_test_syllables_padded = pad_sequences(y_test_syllables, maxlen=X_test_words_padded.shape[1])
 
-# Define the neural network model
-model = Sequential()
-model.add(Embedding(input_dim=len(tokenizer_words.word_index) + 1, output_dim=100, input_length=25))  # Adjust input_length
-model.add(Bidirectional(LSTM(100, return_sequences=True)))
-model.add(TimeDistributed(Dense(num_syllables, activation='softmax')))
+# Define the transformer model
+def transformer_model(input_shape, output_shape, num_heads=4, ff_dim=32, dropout=0.1):
+    inputs = Input(shape=(input_shape,))
+
+    embedding_layer = Embedding(input_dim=len(tokenizer_words.word_index) + 1, output_dim=100, input_length=25)(inputs)
+
+    transformer_block = tfa.layers.MultiHeadAttention(
+        num_heads=num_heads, key_dim=ff_dim, dropout=dropout
+    )(embedding_layer, embedding_layer)
+    transformer_block = tfa.layers.FeedForwardNetwork(
+        units=ff_dim, dropout=dropout
+    )(transformer_block)
+    transformer_block = Dropout(dropout)(transformer_block)
+
+    output_layer = Dense(output_shape, activation='softmax')(transformer_block)
+
+    model = Model(inputs=inputs, outputs=output_layer)
+    return model
+
+
+# Create the transformer model
+model = transformer_model(input_shape=25, output_shape=num_syllables)
 
 # Compile the model
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
